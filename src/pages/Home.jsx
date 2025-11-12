@@ -87,6 +87,11 @@ function Home() {
     navigate('/dashboard');
   };
 
+  const handleSettings = () => {
+    console.log('[Home] Navigate to settings page');
+    navigate('/settings');
+  };
+
   const handleSignOut = async () => {
     console.log('[Home] Signing out');
     await supabaseHelpers.signOut();
@@ -142,19 +147,25 @@ function Home() {
           style={{ ...styles.button, ...styles.primaryButton }}
           onClick={handleStartRecording}
         >
-          Start Recording
+          🎙️ Start Recording
         </button>
         <button
           style={{ ...styles.button, ...styles.secondaryButton }}
           onClick={handleViewHistory}
         >
-          View History
+          📜 View History
         </button>
         <button
           style={{ ...styles.button, ...styles.secondaryButton }}
           onClick={handleViewDashboard}
         >
-          Manager Dashboard
+          📊 Manager Dashboard
+        </button>
+        <button
+          style={{ ...styles.button, ...styles.secondaryButton }}
+          onClick={handleSettings}
+        >
+          ⚙️ Settings
         </button>
       </div>
 
