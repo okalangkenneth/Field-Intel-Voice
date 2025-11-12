@@ -42,8 +42,9 @@ recordings/
 # Supabase local
 .supabase/
 
-# Claude Code sessions (optional)
+# Claude Code sessions and local settings
 .claude/sessions/
+.claude/settings.local.json
 
 # Vercel
 .vercel
