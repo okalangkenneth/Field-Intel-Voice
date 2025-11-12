@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "filesystem": {
+      "read": ["src/", "public/", "supabase/", "tests/", ".env.example"],
+      "write": ["src/", "supabase/", "tests/", "public/manifest.json"],
+      "delete": ["tests/", "src/components/"]
+    },
+    "network": {
+      "allowed_domains": [
+        "supabase.co",
+        "api.openai.com",
+        "salesforce.com",
+        "hubspot.com",
+        "pipedrive.com"
+      ]
+    }
+  },
+  "sandbox": {
+    "enforce_boundaries": true,
+    "protect_paths": [
+      ".env",
+      ".env.local",
+      "node_modules/",
+      ".git/"
+    ]
+  },
+  "hooks": {
+    "pre_commit": ".claude/hooks/pre-commit.sh",
+    "post_generation": ".claude/hooks/validate-security.sh"
+  },
+  "project_context": {
+    "domain": "voice-to-crm-saas",
+    "complexity": "high",
+    "security_level": "high",
+    "data_sensitivity": "high"
+  }
+}
