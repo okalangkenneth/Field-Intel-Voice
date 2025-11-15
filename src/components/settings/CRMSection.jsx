@@ -28,12 +28,17 @@ function CRMSection({ profile, onDisconnect, onConnect }) {
     }
   };
 
-  const handleConnect = (provider) => {
+  const handleConnect = async (provider) => {
     console.log('[CRMSection] Connecting to:', provider);
 
     if (provider === 'salesforce') {
-      // Initiate Salesforce OAuth flow
-      initiateSalesforceAuth();
+      console.log('[CRMSection] Calling initiateSalesforceAuth()...');
+      try {
+        await initiateSalesforceAuth();
+        console.log('[CRMSection] initiateSalesforceAuth() completed');
+      } catch (error) {
+        console.error('[CRMSection] Error during Salesforce OAuth:', error);
+      }
     } else {
       // For other providers, use the parent handler
       onConnect(provider);

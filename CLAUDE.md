@@ -642,7 +642,25 @@ Located in `.claude/agents/`:
 | 2025-11-12 | Supabase for backend | Free tier, built-in auth, edge functions for AI calls | Kenneth |
 | 2025-11-12 | Salesforce integration first | Largest market share in enterprise sales | Kenneth |
 | 2025-11-12 | 5-minute max recording | Balance API costs vs. typical meeting length | Kenneth |
+| 2025-11-15 | OAuth PKCE pattern: Store verifier in state | localStorage unreliable during redirects | Kenneth + Claude |
+| 2025-11-15 | Code verifier charset: No `~` character | URLSearchParams encodes `~` to `%7E`, causes OAuth errors | Kenneth + Claude |
 | [Add yours] | | | |
+
+---
+
+## 📚 IMPORTANT DOCUMENTATION
+
+### OAuth Integration Guide
+**MUST READ before implementing HubSpot or Pipedrive OAuth:**
+
+See `docs/oauth-integration-guide.md` for complete OAuth integration patterns and critical lessons learned from Salesforce integration.
+
+**Key takeaways:**
+- ✅ Store code_verifier in **state parameter** (not localStorage)
+- ✅ Use charset **without `~`** character
+- ✅ Use **plain env var names** in Edge Functions (no VITE_ prefix)
+- ✅ Use **service role key** for Edge Function authentication
+- ✅ **Verify everything** - add comprehensive logging during development
 
 ---
 

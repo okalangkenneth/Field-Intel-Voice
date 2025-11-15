@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { typography, colors } from '../styles/index.js';
 import { handleSalesforceCallback } from '../services/crm/salesforce.js';
@@ -8,8 +8,16 @@ function SalesforceCallback() {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState('processing');
   const [message, setMessage] = useState('Connecting to Salesforce...');
+  const processingRef = useRef(false);
 
   useEffect(() => {
+    // Prevent duplicate processing (React StrictMode runs effects twice)
+    if (processingRef.current) {
+      console.log('[SalesforceCallback] Already processing, skipping duplicate');
+      return;
+    }
+    processingRef.current = true;
+
     const processCallback = async () => {
       console.log('[SalesforceCallback] Processing OAuth callback');
 
@@ -40,9 +48,17 @@ function SalesforceCallback() {
       const result = await handleSalesforceCallback(code, state);
 
       if (result.error) {
-        setStatus('error');
-        setMessage(result.error);
-        setTimeout(() => navigate('/settings'), 3000);
+        // Ignore "duplicate callback" errors from React StrictMode
+        if (result.error.includes('Duplicate callback')) {
+          console.log('[SalesforceCallback] Ignoring duplicate callback error');
+          setStatus('success');
+          setMessage('Successfully connected to Salesforce!');
+          setTimeout(() => navigate('/settings'), 2000);
+        } else {
+          setStatus('error');
+          setMessage(result.error);
+          setTimeout(() => navigate('/settings'), 3000);
+        }
       } else {
         setStatus('success');
         setMessage('Successfully connected to Salesforce!');
