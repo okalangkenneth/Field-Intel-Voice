@@ -40,9 +40,18 @@ http://localhost:5173
 
 ## 📚 Documentation
 
+### Getting Started
+- **[PROJECT_STATUS.md](./PROJECT_STATUS.md)** - 📊 **Current implementation status** (83% complete)
+- **[TESTING_GUIDE.md](./TESTING_GUIDE.md)** - 🧪 **Step-by-step testing instructions**
 - **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Complete deployment guide (Supabase + Vercel)
-- **[IDEA.md](./IDEA.md)** - Full business case, market analysis, technical architecture
+
+### Development
 - **[CLAUDE.md](./CLAUDE.md)** - Development rules and coding standards for Claude Code
+- **[docs/oauth-integration-guide.md](./docs/oauth-integration-guide.md)** - OAuth integration patterns
+
+### Project Info
+- **[IDEA.md](./IDEA.md)** - Full business case, market analysis, technical architecture
+- **[docs/SALESFORCE_SETUP.md](./docs/SALESFORCE_SETUP.md)** - Salesforce OAuth setup
 
 ## 🏗️ Tech Stack
 
@@ -141,22 +150,47 @@ supabase/
 - [x] Environment configuration
 - [x] Deployment documentation
 
-## 🚧 In Progress / Coming Soon
+## 📊 Current Status
 
-- [ ] Salesforce OAuth integration
-- [ ] HubSpot sync
-- [ ] Pipedrive sync
+**Version:** 0.9 (83% Complete - Near MVP)
+
+### ✅ Working
+- Voice recording → Audio upload → Database tracking
+- Salesforce OAuth integration (fully tested)
+- Dashboard and UI components
+- User authentication and profiles
+
+### ⚠️ Deployed But Untested
+- OpenAI Whisper transcription (needs API key + testing)
+- GPT-4 AI analysis (needs testing)
+
+### ❌ Critical Missing Feature
+- **CRM Sync Function** - Contacts/tasks not syncing to Salesforce yet
+  - This is the only blocking issue for MVP
+  - Estimated: 2-3 hours to implement
+
+**See [PROJECT_STATUS.md](./PROJECT_STATUS.md) for detailed breakdown**
+
+## 🚧 Coming Soon
+
+- [ ] **CRM Sync Function** (CRITICAL - highest priority)
+- [ ] End-to-end testing with real audio
+- [ ] HubSpot integration
+- [ ] Pipedrive integration
 - [ ] Manager dashboard with team metrics
 - [ ] Offline mode with sync queue
 - [ ] PWA installation
-- [ ] CRM field mapping UI
-- [ ] Automated testing
+- [ ] Error handling improvements
 
-## 🚀 Ready for Deployment
+## 🧪 Testing
 
-The application is fully functional and ready to deploy! Follow **[DEPLOYMENT.md](./DEPLOYMENT.md)** for step-by-step instructions.
+**Ready to test?** Follow **[TESTING_GUIDE.md](./TESTING_GUIDE.md)** for step-by-step instructions.
 
-**Current Status:** MVP Complete (Week 3)
+**Next steps:**
+1. Deploy OpenAI API key (`supabase secrets set OPENAI_API_KEY="..."`)
+2. Test voice recording → transcription → analysis
+3. Implement CRM sync function
+4. Test end-to-end flow
 
 ## 📝 License
 
