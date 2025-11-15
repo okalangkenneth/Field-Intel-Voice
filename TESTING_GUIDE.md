@@ -230,28 +230,99 @@ curl -X POST https://cmpuxsspznnxhspmjlyf.supabase.co/functions/v1/transcribe \
 
 ---
 
-## Step 5: Test CRM Sync (BLOCKED - Not Implemented)
+## Step 5: Test CRM Sync
 
-**Status:** ❌ Cannot test yet - CRM sync function not implemented
+**Status:** ✅ CRM sync function implemented and deployed - Ready to test!
 
-**What should happen:**
-1. After analysis completes
-2. CRM sync function automatically runs
-3. Creates contact in Salesforce: "Sarah Johnson"
-4. Creates tasks: "Send proposal", "Schedule demo"
-5. Logs sync status to `crm_sync_logs` table
+**Time:** 10-15 minutes
 
-**What actually happens:**
-- Nothing - function doesn't exist
+### 5.1 Prerequisites
+- Salesforce account connected (Settings → CRM → Connect Salesforce)
+- OAuth completed successfully
+- Analysis completed (Step 4) with confidence >= 80%
 
-**Next Steps:**
-1. Implement `supabase/functions/crm-sync/index.ts`
-2. Deploy function: `supabase functions deploy crm-sync`
-3. Test end-to-end
+### 5.2 Trigger CRM Sync
+
+**Automatic:** CRM sync runs automatically after analysis completes (if confidence >= 80%)
+
+**Check if it ran:**
+1. Go to Supabase Dashboard
+2. Navigate to **Edge Functions** → **crm-sync** → **Logs**
+3. Look for recent invocation within 5-10 seconds of analysis
+
+### 5.3 Monitor Progress
+
+**Watch Edge Function Logs:**
+You should see:
+```
+[CRM Sync] Function invoked
+[CRM Sync] Processing: { analysisId: ..., recordingId: ... }
+[CRM Sync] Fetching analysis results
+[CRM Sync] Analysis found for user: [userId]
+[CRM Sync] Fetching CRM credentials
+[CRM Sync] CRM provider: salesforce
+[CRM Sync] Data to sync: { contacts: 1, actionItems: 2 }
+[CRM Sync] Syncing contact: Sarah Johnson
+[CRM Sync] Contact synced: [contactId]
+[CRM Sync] Syncing task: Send proposal
+[CRM Sync] Task synced: [taskId]
+[CRM Sync] Logging sync result: completed
+[CRM Sync] Sync completed: { status: 'completed', contacts: 1, tasks: 2 }
+```
+
+### 5.4 Verify in Database
+
+**Check crm_sync_logs table:**
+1. Go to **Table Editor** → **crm_sync_logs**
+2. Find your sync (most recent)
+3. Verify fields:
+   - `status`: Should be 'completed' (or 'partial' if some failed)
+   - `provider`: 'salesforce'
+   - `synced_data`: JSON with contacts/tasks counts
+   - `error_message`: Should be null (or specific error if failed)
+
+**Check recordings table:**
+1. Go to **Table Editor** → **recordings**
+2. Find your recording
+3. Verify `status = 'synced'`
+
+### 5.5 Verify in Salesforce
+
+**Check Contact Created:**
+1. Open Salesforce
+2. Go to **Contacts** (or **Sales** → **Contacts**)
+3. Search for "Sarah Johnson" (or the name from your test)
+4. Click on the contact
+5. Verify fields:
+   - Email: sarah.johnson@acmeprops.com
+   - Company: Acme Properties (if extracted)
+   - Description: Should mention "Extracted from voice recording"
+
+**Check Tasks Created:**
+1. While viewing the contact, scroll to **Activity** section
+2. Look for tasks:
+   - "Send proposal" (Priority: High, Due: This Friday)
+   - "Schedule demo" (Priority: Medium)
+3. Verify tasks are linked to the contact
+
+**Expected Result:** ✅ Contact and tasks appear in Salesforce, linked correctly
+
+**If it fails:**
+1. **Check Edge Function Logs** (crm-sync function)
+2. **Common Issues:**
+   - "CRM not connected" → Connect Salesforce in Settings
+   - "Auth session missing" → Verify user logged in
+   - "Failed to create contact" → Check Salesforce API permissions
+   - "Failed to create task" → Check task data validity
+   - OAuth token expired → Reconnect Salesforce
+3. **Check crm_sync_logs table** for error details
+4. **Retry:**
+   - Manual retry: Can call function again via Supabase dashboard
+   - Or: Record new voice note and test again
 
 ---
 
-## Step 6: End-to-End Test (After CRM Sync Implemented)
+## Step 6: End-to-End Test (Complete Pipeline)
 
 **Time:** 15 minutes
 
