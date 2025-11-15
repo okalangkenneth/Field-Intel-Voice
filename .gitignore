@@ -51,3 +51,7 @@ recordings/
 
 # Build artifacts
 *.tsbuildinfo
+
+# Temporary files
+Logs/
+images/
